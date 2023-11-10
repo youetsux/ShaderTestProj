@@ -15,9 +15,11 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
+    q = new Quad();
+    q->Initialize();
     //モデルデータのロード
-    hModel_ = Model::Load("assets/BoxDefault.fbx");
-    assert(hModel_ >= 0);
+   // hModel_ = Model::Load("assets/chocolate.fbx");
+   //ssert(hModel_ >= 0);
 }
 
 //更新
@@ -29,8 +31,9 @@ void Stage::Update()
 //描画
 void Stage::Draw()
 {
-    Model::SetTransform(hModel_, transform_);
-    Model::Draw(hModel_);
+    q->Draw(transform_);
+    ///Model::SetTransform(hModel_, transform_);
+    //Model::Draw(hModel_);
 }
 
 //開放

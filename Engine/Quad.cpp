@@ -46,7 +46,7 @@ HRESULT Quad::Initialize()
 void Quad::Draw(Transform& transform)
 {
 
-	Direct3D::SetShader(SHADER_3D);
+	Direct3D::SetShader(SHADER_2D);
 	transform.Calclation();//トランスフォームを計算
 	//コンスタントバッファに情報を渡す
 	PassDataToCB(transform);
@@ -167,7 +167,7 @@ HRESULT Quad::LoadTexture()
 	pTexture_ = new Texture;
 
 	HRESULT hr;
-	hr = pTexture_->Load("Assets\\Dice.png");
+	hr = pTexture_->Load("Assets\\texture.png");
 	if (FAILED(hr))
 	{
 		MessageBox(NULL, "テクスチャの作成に失敗しました", "エラー", MB_OK);
