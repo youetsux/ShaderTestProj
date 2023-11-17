@@ -21,7 +21,7 @@ void Stage::Initialize()
     //モデルデータのロード
     hModel_ = Model::Load("assets/Ball.fbx");
     assert(hModel_ >= 0);
-    Camera::SetPosition(XMVECTOR{ 0, 0, -5, 0 });
+    Camera::SetPosition(XMVECTOR{ 0, 0, -15, 0 });
     Camera::SetTarget(XMVECTOR{ 0, 0, 0, 0 });
 }
 

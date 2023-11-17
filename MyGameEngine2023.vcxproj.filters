@@ -68,6 +68,9 @@
     <ClCompile Include="Stage.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="axisClass.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple3D.hlsl" />
@@ -110,9 +113,6 @@
     <ClInclude Include="Engine\SceneManager.h">
       <Filter>ヘッダーファイル\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Childoden.h">
-      <Filter>ヘッダーファイル\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\SphereCollider.h">
       <Filter>ヘッダーファイル\Engine</Filter>
     </ClInclude>
@@ -120,6 +120,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Stage.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="axisClass.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
