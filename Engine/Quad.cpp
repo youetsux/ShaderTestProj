@@ -46,7 +46,7 @@ HRESULT Quad::Initialize()
 void Quad::Draw(Transform& transform)
 {
 
-	Direct3D::SetShader(SHADER_2D);
+	Direct3D::SetShader(SHADER_3D);
 	transform.Calclation();//トランスフォームを計算
 	//コンスタントバッファに情報を渡す
 	PassDataToCB(transform);
@@ -167,7 +167,7 @@ HRESULT Quad::LoadTexture()
 	pTexture_ = new Texture;
 
 	HRESULT hr;
-	hr = pTexture_->Load("Assets\\texture.png");
+	hr = pTexture_->Load("Assets\\kaas.png");
 	if (FAILED(hr))
 	{
 		MessageBox(NULL, "テクスチャの作成に失敗しました", "エラー", MB_OK);
@@ -184,6 +184,7 @@ void Quad::PassDataToCB(Transform transform)
 	CONSTANT_BUFFER cb;
 	cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 	cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
+	cb.wSize = pTexture_->GetTextureSize();
 
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める

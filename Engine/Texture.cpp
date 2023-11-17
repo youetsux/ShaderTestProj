@@ -29,6 +29,7 @@ HRESULT Texture::Load(string filename)
 	ScratchImage image;
 	HRESULT hr;
 	hr = LoadFromWICFile(wtext, WIC_FLAGS::WIC_FLAGS_NONE, &metadata, image);
+	imgSize_ = XMFLOAT2{ (float)image.GetImages()->width, (float)image.GetImages()->height };
 	/////////
 	if (FAILED(hr))
 	{
@@ -59,10 +60,10 @@ HRESULT Texture::Load(string filename)
 	{
 		return S_FALSE;
 	}
-
-
     return S_OK;
 }
+
+
 
 void Texture::Release()
 {
