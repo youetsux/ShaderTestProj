@@ -53,7 +53,6 @@ HRESULT Fbx::Load(std::string fileName)
 
 	//カレントディレクトリ変更
 	SetCurrentDirectory(dir);
-	SetFlatColor({ 0,1,0,0 });
 	InitVertex(mesh);		//頂点バッファ準備
 	InitIndex(mesh);		//インデックスバッファ準備
 	IntConstantBuffer();	//コンスタントバッファ準備
