@@ -32,11 +32,11 @@ void axisClass::Draw()
 {
     Transform xt, yt, zt;
     xt.rotate_.y = 180;
-    xt.scale_ = { 0.2,0.2,0.2 };
+    xt.scale_ = { 0.5,0.5,0.5 };
     yt.rotate_.z = -90;
-    yt.scale_ = { 0.2,0.2,0.2 };
+    yt.scale_ = { 0.5,0.5,0.5 };
     zt.rotate_.y = 90;
-    zt.scale_ = { 0.2,0.2,0.2 };
+    zt.scale_ = { 0.5,0.5,0.5 };
     Model::SetTransform(hModel_, xt);
 
     Model::Draw(hModel_);

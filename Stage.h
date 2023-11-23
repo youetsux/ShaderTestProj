@@ -6,7 +6,10 @@
 class Stage : public GameObject
 {
     int hModel_;    //モデル番号
-    Quad* q;
+    int hGround_;
+    Transform trBall;
+    Transform trGround;
+    //Quad* q;
 public:
     //コンストラクタ
     Stage(GameObject* parent);
