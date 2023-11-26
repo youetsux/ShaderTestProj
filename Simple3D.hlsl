@@ -8,12 +8,13 @@ SamplerState	g_sampler : register(s0);	//サンプラー
 // コンスタントバッファ
 // DirectX 側から送信されてくる、ポリゴン頂点以外の諸情報の定義
 //───────────────────────────────────────
-cbuffer global
+cbuffer global:register(b0)
 {
 	float4x4	matWVP;			// ワールド・ビュー・プロジェクションの合成行列
 	float4x4	matNormal;           // ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
-	bool		isTextured;			//テクスチャーが貼られているかどうか
+	float4		lightDirection;
+	int			isTextured;			//テクスチャーが貼られているかどうか
 };
 
 //───────────────────────────────────────
@@ -40,9 +41,12 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 	//outData.pos = pos;
 	outData.uv = uv;
 	//outData.color = (1.0, 1.0, 1.0, 1.0);
-
+	normal.w = 0;
 	normal = mul(normal , matNormal);
-	float4 light = float4(2,  -1,  1, 1);
+	normal = normalize(normal);
+
+	//float4 light = float4(0,  0,  -1, 0);
+	float light = lightDirection;
 	light = normalize(light);
 	outData.color = clamp(dot(normal, light), 0, 1);
 

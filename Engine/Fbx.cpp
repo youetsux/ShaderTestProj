@@ -6,6 +6,8 @@
 
 using namespace DirectX;
 
+const XMFLOAT4 LIGHT_DIRECTION{ 0, -1, 0, 0 };
+
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0),
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
@@ -84,7 +86,7 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 
 			//’¸“_‚ÌˆÊ’u
 			FbxVector4 pos = mesh->GetControlPointAt(index);
-			vertices[index].position = XMVectorSet((float)(-pos[0]), (float)pos[1], (float)pos[2], 0.0f);
+			vertices[index].position = XMVectorSet((float)(pos[0]), (float)pos[1], (float)pos[2], 0.0f);
 
 			//’¸“_‚ÌUV
 			FbxLayerElementUV* pUV = mesh->GetLayer(0)->GetUVs();
@@ -261,6 +263,7 @@ void Fbx::Draw(Transform& transform)
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.diffuseColor = pMaterialList_[i].diffuse;
+		cb.lightDirection = LIGHT_DIRECTION;
 		cb.isTextured = pMaterialList_[i].pTexture != nullptr;
 	
 		D3D11_MAPPED_SUBRESOURCE pdata;

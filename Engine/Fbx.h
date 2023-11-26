@@ -29,7 +29,8 @@ class Fbx
 		XMMATRIX	matWVP;
 		XMMATRIX	matNormal;
 		XMFLOAT4	diffuseColor;
-		int			isTextured;
+		XMFLOAT4	lightDirection;
+		BOOL		isTextured;
 	};
 
 	struct VERTEX
