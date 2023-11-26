@@ -27,16 +27,17 @@ void Stage::Initialize()
     Camera::SetTarget(XMVECTOR{ 0, 0, 0, 0 });
     trBall.position_ = {2, 2, 0};
     trBall.rotate_ = { 0, 0, 0 };
-    trBall.scale_ = { 1,1,1 };
+    trBall.scale_ = { -1,1,1 };
     trGround.position_ = { 0, 0, 0 };
-    trGround.rotate_ = { 0,-15, -180 };
-    trGround.scale_ = { 10, 10, 10 };
+    trGround.rotate_ = { 0, 0, 0 };
+    trGround.scale_ = { -10, 10, 10 };
 }
 
 //çXêV
 void Stage::Update()
 {
    //transform_.rotate_.y += 0.5f;
+    trBall.rotate_.y += 0.5f;
 }
 
 //ï`âÊ
