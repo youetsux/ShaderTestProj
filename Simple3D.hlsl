@@ -11,9 +11,10 @@ SamplerState	g_sampler : register(s0);	//サンプラー
 cbuffer global:register(b0)
 {
 	float4x4	matWVP;			// ワールド・ビュー・プロジェクションの合成行列
-	float4x4	matNormal;           // ワールド行列
+	float4x4	matW;           // ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
 	float4		lightDirection;
+	float4		eyePosition;
 	int			isTextured;			//テクスチャーが貼られているかどうか
 };
 
@@ -25,6 +26,8 @@ struct VS_OUT
 	float4 pos  : SV_POSITION;	//位置
 	float2 uv	: TEXCOORD;		//UV座標
 	float4 color	: COLOR;	//色（明るさ）
+	float4 eyev		:TEXCOORD1;
+	float4 normal	:TEXCOORD2;
 };
 
 //───────────────────────────────────────
@@ -33,7 +36,7 @@ struct VS_OUT
 VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 {
 	//ピクセルシェーダーへ渡す情報
-	VS_OUT outData;
+	VS_OUT outData = (VS_OUT)0;
 
 	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
 	//スクリーン座標に変換し、ピクセルシェーダーへ
@@ -42,13 +45,16 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 	outData.uv = uv;
 	//outData.color = (1.0, 1.0, 1.0, 1.0);
 	normal.w = 0;
-	normal = mul(normal , matNormal);
+	normal = mul(normal , matW);
 	normal = normalize(normal);
+	outData.normal = normal;
 
 	//float4 light = float4(0,  0,  -1, 0);
 	float light = lightDirection;
 	light = normalize(light);
 	outData.color = clamp(dot(normal, light), 0, 1);
+	float4 posw = mul(pos, matW);
+	outData.eyev = eyePosition - posw;
 
 	//まとめて出力
 	return outData;
@@ -60,9 +66,12 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 float4 PS(VS_OUT inData) : SV_Target
 {
 	float4 lightSource = float4(1.0, 1.0, 1.0, 1.0);
-	float4 ambentSource = float4(0.1, 0.1, 0.1, 1.0);
+	float4 ambentSource = float4(0.2, 0.2, 0.2, 1.0);
 	float4 diffuse;
 	float4 ambient;
+	float4 NL = saturate(dot(inData.normal, normalize(lightDirection)));
+	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightDirection));
+	float4 specular = 2 * pow(saturate(dot(reflect, normalize(inData.eyev))),8);
 	if (isTextured == false)
 	{
 		diffuse = lightSource * diffuseColor * inData.color;
@@ -76,7 +85,7 @@ float4 PS(VS_OUT inData) : SV_Target
 	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
 	//float4 diffuse = lightSource * inData.color;
 	//float4 ambient = lightSource * ambentSource;
-	return diffuse + ambient;
+	return diffuse + ambient + specular;
 
 	
 	//return g_texture.Sample(g_sampler, inData.uv);
