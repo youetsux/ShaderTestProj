@@ -3,9 +3,7 @@
 
 Quad::Quad() :
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr),
-	pConstantBuffer_(nullptr), 
-	
-	_(nullptr), vertexNum_(0), indexNum_(0)
+	pConstantBuffer_(nullptr), pTexture_(nullptr), vertexNum_(0), indexNum_(0)
 {
 }
 

@@ -1,5 +1,5 @@
 #include "Sprite.h"
-
+#include "Texture.h"
 #include "Sprite.h"
 #include "Camera.h"
 
@@ -8,10 +8,7 @@
 Sprite::Sprite() :
 	vertexNum_(0), pVertexBuffer_(nullptr),
 	indexNum(0), pIndexBuffer_(nullptr),
-	pConstantBuffer_(nullptr),
-	
-	
-	_(nullptr)
+	pConstantBuffer_(nullptr),pTexture_(nullptr)
 {
 }
 

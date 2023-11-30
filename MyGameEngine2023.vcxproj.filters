@@ -71,6 +71,12 @@
     <ClCompile Include="AssimpModel.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="FbxData.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderableModel.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple3D.hlsl" />
@@ -126,6 +132,11 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="AssimpModel.h" />
+    <ClInclude Include="FbxData.h" />
+    <ClInclude Include="RenderableModel.h" />
+    <ClInclude Include="Mesh.h">
+      <Filter>ヘッダーファイル\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

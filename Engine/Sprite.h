@@ -37,8 +37,7 @@ protected:
 
 	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
 
-	Texture* 
-		_;		//テクスチャ
+	Texture* pTexture_;		//テクスチャ
 
 
 public:

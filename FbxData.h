@@ -4,39 +4,24 @@
 #include <string>
 #include "Engine/Transform.h"
 #include <vector>
-
+#include <filesystem>
+#include "Mesh.h"
 
 #pragma comment(lib, "LibFbxSDK-MD.lib")
 #pragma comment(lib, "LibXml2-MD.lib")
 #pragma comment(lib, "zlib-MD.lib")
 
 using std::vector;
-
-class Texture;
-
+//class Texture;
 
 class FbxData
 {
-	//マテリアル
-	struct MATERIAL
-	{
-		Texture* pTexture;
-		XMFLOAT4 diffuse;
-	};
-
-	struct VERTEX
-	{
-		XMVECTOR position;//位置
-		XMVECTOR uv; //テクスチャ座標
-		XMVECTOR normal; //法線ベクトル
-	};
-
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数
 	int materialCount_;	//マテリアルの個数
 
-	MATERIAL* pMaterialList_;
-	vector <int> indexCount_;
+	vector<MATERIAL *> MaterialList_;
+	vector<MESH *> mesh_;
 
 	void InitVertex(fbxsdk::FbxMesh* mesh);
 	void InitIndex(fbxsdk::FbxMesh* mesh);
