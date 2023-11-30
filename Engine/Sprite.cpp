@@ -9,7 +9,9 @@ Sprite::Sprite() :
 	vertexNum_(0), pVertexBuffer_(nullptr),
 	indexNum(0), pIndexBuffer_(nullptr),
 	pConstantBuffer_(nullptr),
-	pTexture_(nullptr)
+	
+	
+	_(nullptr)
 {
 }
 
