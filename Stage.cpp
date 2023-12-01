@@ -1,6 +1,7 @@
 #include "Stage.h"
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
+#include "axisClass.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
@@ -31,6 +32,7 @@ void Stage::Initialize()
     trGround.position_ = { 0, 0, 0 };
     trGround.rotate_ = { 0, 0, 0 };
     trGround.scale_ = { 10, 10, 10 };
+    Instantiate<axisClass>(this);
 }
 
 //更新

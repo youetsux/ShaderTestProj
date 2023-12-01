@@ -12,6 +12,7 @@ cbuffer global:register(b0)
 {
 	float4x4	matWVP;			// ワールド・ビュー・プロジェクションの合成行列
 	float4x4	matW;           // ワールド行列
+	float4x4	matNormal;           // ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
 	float4		lightDirection;
 	float4		eyePosition;
@@ -27,8 +28,7 @@ struct VS_IN
 	float2 uv	: TEXCOORD;		//UV座標
 	float3 normal	:NORMAL;
 	//float4 color	: COLOR;	//色（明るさ）
-	//float4 eyev		:TEXCOORD1;
-
+	//float4 eyev	:TEXCOORD1;
 };
 
 
@@ -50,26 +50,20 @@ PS_IN VS(VS_IN inData)
 {
 	//ピクセルシェーダーへ渡す情報
 	PS_IN outData = (PS_IN)0;
-	outData.pos_ = float4(inData.pos, 1.0);
-	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
-	//スクリーン座標に変換し、ピクセルシェーダーへ
-	outData.pos = mul(outData.pos_, matWVP);
+	float4 posTmp = float4(inData.pos, 1.0);
+	outData.pos_ = mul(posTmp, matW);
+	outData.pos = mul(posTmp, matWVP);
 	//outData.pos = pos;
 	outData.uv = inData.uv;
-	outData.color = diffuseColor;
-	//outData.color = (1.0, 1.0, 1.0, 1.0);
+	//outData.color = diffuseColor;
+	outData.color = (1.0, 1.0, 1.0, 1.0);
 	float4 normal;
-	normal.w= 0;
-	normal = mul(inData.normal, matW);
+
+	normal = mul(inData.normal, matNormal);
+	normal.w = 0;
 	normal = normalize(normal);
 	outData.normal = normal;
 
-	//float4 light = float4(0, 10, -2, 0);
-	////float light = lightDirection;
-	//light = normalize(light);
-	//outData.color = clamp(dot(normal, light), 0, 1);
-	//float4 posw = mul(pos, matW);
-	//outData.eyev = eyePosition - posw;
 
 	//まとめて出力
 	return outData;
@@ -80,19 +74,18 @@ PS_IN VS(VS_IN inData)
 //───────────────────────────────────────
 float4 PS(PS_IN inData) : SV_Target
 {
-	float4 light = float4(0.0, 2, 0, 1); // 点光源の位置
-	light = mul(light, matW);
+	float4 light = float4(0, 2, -2, 1); // 点光源の位置
+	
 
 	float3 LD = inData.pos_ - light; // 光の方向ベクトル
 	float len = length(LD); // 光の方向ベクトルを正規化(大きさを 1 にし
 	//float4 outColor = inData.color;
-	float4 outColor = { 1,1,1,1 };
+	float4 outColor = { 1,1,1,0 };
+
 	float lightMagnitude = saturate(dot(inData.normal, -normalize(LD)));
-	float k = saturate(1.0f / (1.0f + 1.0 * len * len));
+	float k = 1.0f / (1.0 * len * len);
 
-	return outColor * (0.8 * k * lightMagnitude + 0.2f);
-
-
+	return outColor * (0.8 * k * lightMagnitude + 0.3f);
 
 	//return g_texture.Sample(g_sampler, inData.uv);
 }

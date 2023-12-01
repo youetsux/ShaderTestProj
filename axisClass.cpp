@@ -3,7 +3,7 @@
 #include "Engine/Fbx.h"
 
 axisClass::axisClass(GameObject* parent)
-	:GameObject(parent, "ChildOden"), hModel_(-1)
+	:GameObject(parent, "AXIS"), hModel_(-1)
 {
 
 }

@@ -3,7 +3,6 @@
 #include "Engine/SceneManager.h"
 #include "Stage.h"
 #include "Engine/Camera.h"
-#include "axisClass.h"
 
 TestScene::TestScene(GameObject* parent)
 	:GameObject(parent, "TestScene")
@@ -12,9 +11,7 @@ TestScene::TestScene(GameObject* parent)
 
 void TestScene::Initialize()
 {
-
 	Instantiate<Stage>(this);
-	Instantiate<axisClass>(this);
 }
 
 void TestScene::Update()
