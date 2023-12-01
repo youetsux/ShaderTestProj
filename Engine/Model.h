@@ -15,6 +15,7 @@ namespace Model
 	};
 	int Load(std::string fileName);
 	void SetTransform(int hModel, Transform transform);
+	Fbx* GetModel(int _hModel);
 	void Draw(int hModel);
 	void Release();
 }

@@ -77,7 +77,6 @@ float4 PS(PS_IN inData) : SV_Target
 	//float4 light = float4(0, 2, -2, 1); // 点光源の位置
 	float4 light = lightPosition; // 点光源の位置
 
-
 	float3 LD = inData.pos_ - light; // 光の方向ベクトル
 	float len = length(LD); // 光の方向ベクトルを正規化(大きさを 1 にし
 
@@ -109,9 +108,6 @@ float4 PS(PS_IN inData) : SV_Target
 	//float4 diffuse = lightSource * inData.color;
 	//float4 ambient = lightSource * ambentSource;
 	return diffuse + ambient + specular;
-
-
-
 	
 	//return g_texture.Sample(g_sampler, inData.uv);
 }

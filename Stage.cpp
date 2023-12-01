@@ -43,11 +43,47 @@ void Stage::Update()
     trBall.rotate_.y += 0.5f;
     if (Input::IsKey(DIK_RIGHT))
     {
-        XMFLOAT4 p = Model::ModelData().pfbx_->GetLightPos();
+        XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
         XMFLOAT4 margin{ p.x+0.1f, p.y+0.0f, p.z+ 0.0f, p.w + 0.0f };
         
-        Model::ModelData().pfbx_->SetLightPos(margin);
+        Model::GetModel(hModel_)->SetLightPos(margin);
     }
+    if (Input::IsKey(DIK_LEFT))
+    {
+        XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
+        XMFLOAT4 margin{ p.x - 0.1f, p.y - 0.0f, p.z - 0.0f, p.w - 0.0f };
+
+        Model::GetModel(hModel_)->SetLightPos(margin);
+    }
+    if (Input::IsKey(DIK_UP))
+    {
+        XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
+        XMFLOAT4 margin{ p.x - 0.0f, p.y + 0.1f, p.z - 0.0f, p.w - 0.0f };
+
+        Model::GetModel(hModel_)->SetLightPos(margin);
+    }
+    if (Input::IsKey(DIK_DOWN))
+    {
+        XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
+        XMFLOAT4 margin{ p.x - 0.0f, p.y - 0.1f, p.z - 0.0f, p.w - 0.0f };
+
+        Model::GetModel(hModel_)->SetLightPos(margin);
+    }
+    if (Input::IsKey(DIK_W))
+    {
+        XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
+        XMFLOAT4 margin{ p.x - 0.0f, p.y - 0.0f, p.z + 0.1f, p.w + 0.0f };
+
+        Model::GetModel(hModel_)->SetLightPos(margin);
+    }
+    if (Input::IsKey(DIK_S))
+    {
+        XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
+        XMFLOAT4 margin{ p.x - 0.0f, p.y - 0.0f, p.z - 0.1f, p.w - 0.0f };
+
+        Model::GetModel(hModel_)->SetLightPos(margin);
+    }
+
 }
 
 //•`‰æ
