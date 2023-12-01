@@ -18,7 +18,6 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
-
     //モデルデータのロード
     hModel_ = Model::Load("assets/Ball.fbx");
     hGround_ = Model::Load("assets/Ground.fbx");
