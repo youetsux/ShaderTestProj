@@ -30,9 +30,9 @@ class Fbx
 		XMMATRIX	matW;//wvp
 		XMMATRIX	matNormal;//ÉèÅ[ÉãÉhïœä∑ÇæÇØÇÃÇ‚Ç¬
 		XMFLOAT4	diffuseColor;
-		XMFLOAT4	lightDirection;
+		XMFLOAT4	lightPosition;
 		XMFLOAT4	eyePos;
-		BOOL		isTextured;
+		XMINT4		isTextured;
 	};
 
 	struct VERTEX
@@ -58,11 +58,14 @@ class Fbx
 	void InitMaterial(fbxsdk::FbxNode* pNode);
 	bool IsFlatColor_;
 	XMFLOAT4	dColor_;
+	XMFLOAT4	lightSourcePosition_;
 public:
 
 	Fbx();
 	void	SetFlatColor(XMFLOAT4 col);
 	HRESULT Load(std::string fileName);
 	void    Draw(Transform& transform);
+	void	SetLightPos(XMFLOAT4& pos);
+	XMFLOAT4 GetLightPos() { return(lightSourcePosition_); }
 	void    Release();
 };

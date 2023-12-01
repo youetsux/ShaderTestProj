@@ -1,6 +1,7 @@
 #include "Stage.h"
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
+#include "Engine/Input.h"
 #include "axisClass.h"
 
 //コンストラクタ
@@ -40,6 +41,13 @@ void Stage::Update()
 {
    //transform_.rotate_.y += 0.5f;
     trBall.rotate_.y += 0.5f;
+    if (Input::IsKey(DIK_RIGHT))
+    {
+        XMFLOAT4 p = Model::ModelData().pfbx_->GetLightPos();
+        XMFLOAT4 margin{ p.x+0.1f, p.y+0.0f, p.z+ 0.0f, p.w + 0.0f };
+        
+        Model::ModelData().pfbx_->SetLightPos(margin);
+    }
 }
 
 //描画

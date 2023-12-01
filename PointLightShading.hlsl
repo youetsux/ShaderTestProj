@@ -14,9 +14,9 @@ cbuffer global:register(b0)
 	float4x4	matW;           // ワールド行列
 	float4x4	matNormal;           // ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
-	float4		lightDirection;
+	float4		lightPosition;
 	float4		eyePosition;
-	int			isTextured;			//テクスチャーが貼られているかどうか
+	int4		isTextured;			//テクスチャーが貼られているかどうか
 };
 
 //───────────────────────────────────────
@@ -55,8 +55,8 @@ PS_IN VS(VS_IN inData)
 	outData.pos = mul(posTmp, matWVP);
 	//outData.pos = pos;
 	outData.uv = inData.uv;
-	//outData.color = diffuseColor;
-	outData.color = (1.0, 1.0, 1.0, 1.0);
+	outData.color = diffuseColor;
+	//outData.color = float4(1.0, 1.0, 1.0, 1.0);
 	float4 normal;
 
 	normal = mul(inData.normal, matNormal);
@@ -74,18 +74,44 @@ PS_IN VS(VS_IN inData)
 //───────────────────────────────────────
 float4 PS(PS_IN inData) : SV_Target
 {
-	float4 light = float4(0, 2, -2, 1); // 点光源の位置
-	
+	//float4 light = float4(0, 2, -2, 1); // 点光源の位置
+	float4 light = lightPosition; // 点光源の位置
+
 
 	float3 LD = inData.pos_ - light; // 光の方向ベクトル
 	float len = length(LD); // 光の方向ベクトルを正規化(大きさを 1 にし
-	//float4 outColor = inData.color;
-	float4 outColor = { 1,1,1,0 };
 
 	float lightMagnitude = saturate(dot(inData.normal, -normalize(LD)));
 	float k = 1.0f / (1.0 * len * len);
 
-	return outColor * (0.8 * k * lightMagnitude + 0.3f);
+	float4 NL = saturate(dot(inData.normal, normalize(lightPosition)));
+	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
+	float4 specular = 2 * pow(saturate(dot(reflect, normalize(inData.eyev))),8);
+	
+	float  n = clamp((0.8 * k * lightMagnitude),0,1);
+	float4 lightSource = { 1,1,1,1 };//光の色
+	float4 ambientSource = { 1,1,1,1 };//環境光の色
+	float4 ambTerm = 0.5;
 
+	float4 diffuse;
+	float4 ambient;
+	if (isTextured.x == false)
+	{
+		diffuse = n * lightSource * inData.color ;
+		ambient = ambTerm * ambientSource * inData.color ;
+	}
+	else
+	{
+		diffuse = n * lightSource * g_texture.Sample(g_sampler, inData.uv);
+		ambient = ambTerm * ambientSource * g_texture.Sample(g_sampler, inData.uv);
+	}
+	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
+	//float4 diffuse = lightSource * inData.color;
+	//float4 ambient = lightSource * ambentSource;
+	return diffuse + ambient + specular;
+
+
+
+	
 	//return g_texture.Sample(g_sampler, inData.uv);
 }

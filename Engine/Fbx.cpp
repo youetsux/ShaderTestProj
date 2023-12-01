@@ -7,12 +7,12 @@
 using namespace DirectX;
 using namespace Camera;
 
-const XMFLOAT4 LIGHT_DIRECTION{ 1, 5, 0, 1 };
+const XMFLOAT4 LIGHT_POSITION{2, 1, -1, 0 };
 
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0),
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
-	pMaterialList_(nullptr),IsFlatColor_(false)
+	pMaterialList_(nullptr),IsFlatColor_(false),lightSourcePosition_(LIGHT_POSITION)
 {
 }
 
@@ -265,9 +265,10 @@ void Fbx::Draw(Transform& transform)
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
 		cb.diffuseColor = pMaterialList_[i].diffuse;
-		cb.lightDirection = LIGHT_DIRECTION;
+		cb.lightPosition = lightSourcePosition_;
 		XMStoreFloat4(&cb.eyePos,Camera::GetEyePosition());
-		cb.isTextured = pMaterialList_[i].pTexture != nullptr;
+		int n = (int)(pMaterialList_[i].pTexture != nullptr);
+		cb.isTextured = { n,n,n,n };
 	
 		D3D11_MAPPED_SUBRESOURCE pdata;
 		Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
@@ -304,6 +305,11 @@ void Fbx::Draw(Transform& transform)
 		//描画
 		Direct3D::pContext_->DrawIndexed(indexCount_[i], 0, 0);
 	}
+}
+
+void Fbx::SetLightPos(XMFLOAT4& pos)
+{
+	lightSourcePosition_ = pos;
 }
 
 void Fbx::Release()

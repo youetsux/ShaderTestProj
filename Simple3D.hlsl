@@ -13,7 +13,7 @@ cbuffer global:register(b0)
 	float4x4	matWVP;			// ワールド・ビュー・プロジェクションの合成行列
 	float4x4	matW;           // ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
-	float4		lightDirection;
+	float4		lightPosition;
 	float4		eyePosition;
 	int			isTextured;			//テクスチャーが貼られているかどうか
 };
@@ -69,8 +69,8 @@ float4 PS(VS_OUT inData) : SV_Target
 	float4 ambentSource = float4(0.2, 0.2, 0.2, 1.0);
 	float4 diffuse;
 	float4 ambient;
-	float4 NL = saturate(dot(inData.normal, normalize(lightDirection)));
-	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightDirection));
+	float4 NL = saturate(dot(inData.normal, normalize(lightPosition)));
+	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
 	float4 specular = 2 * pow(saturate(dot(reflect, normalize(inData.eyev))),8);
 	if (isTextured == false)
 	{
