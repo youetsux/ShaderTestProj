@@ -89,18 +89,18 @@ float4 PS(PS_IN inData) : SV_Target
 	float  n = clamp((0.8 * k * lightMagnitude),0,1);
 	float4 lightSource = { 1,1,1,1 };//Œõ‚ÌF
 	float4 ambientSource = { 1,1,1,1 };//ŠÂ‹«Œõ‚ÌF
-	float4 ambTerm = 0.5;
+	float4 ambTerm = 0.2;
 
 	float4 diffuse;
 	float4 ambient;
 	if (isTextured.x == false)
 	{
-		diffuse = n * lightSource * inData.color ;
+		diffuse = lightMagnitude*lightSource * inData.color ;
 		ambient = ambTerm * ambientSource * inData.color ;
 	}
 	else
 	{
-		diffuse = n * lightSource * g_texture.Sample(g_sampler, inData.uv);
+		diffuse = lightMagnitude*lightSource * g_texture.Sample(g_sampler, inData.uv);
 		ambient = ambTerm * ambientSource * g_texture.Sample(g_sampler, inData.uv);
 	}
 	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
