@@ -7,7 +7,7 @@
 using namespace DirectX;
 using namespace Camera;
 
-const XMFLOAT4 LIGHT_POSITION{2, 2, -1.5, 0 };
+const XMFLOAT4 LIGHT_POSITION{1, 2, 1, 0 };
 
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0),
@@ -253,7 +253,7 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 
 void Fbx::Draw(Transform& transform)
 {
-	Direct3D::SetShader(SHADER_POINT);
+	Direct3D::SetShader(SHADER_3D);
 	transform.Calclation();//トランスフォームを計算
 	
 
@@ -267,9 +267,11 @@ void Fbx::Draw(Transform& transform)
 		cb.diffuseColor = pMaterialList_[i].diffuse;
 		cb.lightPosition = lightSourcePosition_;
 		XMStoreFloat4(&cb.eyePos,Camera::GetEyePosition());
-		int n = (int)(pMaterialList_[i].pTexture != nullptr);
-		cb.isTextured = { n,n,n,n };
-	
+		//int n = (int)(pMaterialList_[i].pTexture != nullptr);
+		//cb.isTextured = { n,n,n,n };
+		cb.isTextured = pMaterialList_[i].pTexture != nullptr;
+
+
 		D3D11_MAPPED_SUBRESOURCE pdata;
 		Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 		memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る

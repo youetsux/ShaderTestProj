@@ -12,10 +12,12 @@ cbuffer global:register(b0)
 {
 	float4x4	matWVP;			// ワールド・ビュー・プロジェクションの合成行列
 	float4x4	matW;           // ワールド行列
+	float4x4	matNormal;           // ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
 	float4		lightPosition;
 	float4		eyePosition;
-	int			isTextured;			//テクスチャーが貼られているかどうか
+	bool		isTextured;			//テクスチャーが貼られているかどうか
+
 };
 
 //───────────────────────────────────────
@@ -26,8 +28,8 @@ struct VS_OUT
 	float4 pos  : SV_POSITION;	//位置
 	float2 uv	: TEXCOORD;		//UV座標
 	float4 color	: COLOR;	//色（明るさ）
-	float4 eyev		:TEXCOORD1;
-	float4 normal	:TEXCOORD2;
+	float4 eyev		:POSITION;
+	float4 normal	:NORMAL;
 };
 
 //───────────────────────────────────────
@@ -41,18 +43,16 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
 	//スクリーン座標に変換し、ピクセルシェーダーへ
 	outData.pos = mul(pos, matWVP);
-	//outData.pos = pos;
 	outData.uv = uv;
-	//outData.color = (1.0, 1.0, 1.0, 1.0);
 	normal.w = 0;
-	normal = mul(normal , matW);
+	normal = mul(normal , matNormal);
 	normal = normalize(normal);
 	outData.normal = normal;
 
-	float4 light = float4(0,  10,  -2, 0);
-	//float light = lightDirection;
+	float4 light = normalize(lightPosition);
 	light = normalize(light);
-	outData.color = clamp(dot(normal, light), 0, 1);
+
+	outData.color = saturate(dot(normal, light));
 	float4 posw = mul(pos, matW);
 	outData.eyev = eyePosition - posw;
 
@@ -72,7 +72,7 @@ float4 PS(VS_OUT inData) : SV_Target
 	float4 NL = saturate(dot(inData.normal, normalize(lightPosition)));
 	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
 	float4 specular = 2 * pow(saturate(dot(reflect, normalize(inData.eyev))),8);
-	if (isTextured == false)
+	if (isTextured == 0)
 	{
 		diffuse = lightSource * diffuseColor * inData.color;
 		ambient = lightSource * diffuseColor * ambentSource;

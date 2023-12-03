@@ -21,17 +21,25 @@ void Stage::Initialize()
     //モデルデータのロード
     hModel_ = Model::Load("assets/Ball.fbx");
     hGround_ = Model::Load("assets/Ground.fbx");
+    hLightBall_ = Model::Load("assets/RedBall.fbx");
+
     
     assert(hModel_ >= 0);
     assert(hGround_ >= 0);
+    assert(hLightBall_ >= 0);
     Camera::SetPosition(XMVECTOR{ 3, 5, -8, 0 });
     Camera::SetTarget(XMVECTOR{ 0, 0, 0, 0 });
     trBall.position_ = {2, 2, 0};
     trBall.rotate_ = { 0, 0, 0 };
     trBall.scale_ = {  1,1,1 };
+
     trGround.position_ = { 0, 0, 0 };
-    trGround.rotate_ = { 0, 0, 0 };
+    trGround.rotate_ = { 0, 0, 0};
     trGround.scale_ = { 10, 10, 10 };
+
+    trLightBall.position_ = { 0, 0, 0 };
+    trLightBall.rotate_ = { 0, 0, 0 };
+    trLightBall.scale_ = { 0.4, 0.4, 0.4 };
     Instantiate<axisClass>(this);
 }
 
@@ -45,44 +53,51 @@ void Stage::Update()
         XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
         XMFLOAT4 margin{ p.x+0.1f, p.y+0.0f, p.z+ 0.0f, p.w + 0.0f };
         
-        Model::GetModel(hModel_)->SetLightPos(margin);
+        //Model::GetModel(hModel_)->SetLightPos(margin);
+        Model::SetLightPosition(margin);
     }
     if (Input::IsKey(DIK_LEFT))
     {
         XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
         XMFLOAT4 margin{ p.x - 0.1f, p.y - 0.0f, p.z - 0.0f, p.w - 0.0f };
 
-        Model::GetModel(hModel_)->SetLightPos(margin);
+       /// Model::GetModel(hModel_)->SetLightPos(margin);
+        Model::SetLightPosition(margin);
     }
     if (Input::IsKey(DIK_UP))
     {
         XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
         XMFLOAT4 margin{ p.x - 0.0f, p.y + 0.1f, p.z - 0.0f, p.w - 0.0f };
 
-        Model::GetModel(hModel_)->SetLightPos(margin);
+        //Model::GetModel(hModel_)->SetLightPos(margin);
+        Model::SetLightPosition(margin);
     }
     if (Input::IsKey(DIK_DOWN))
     {
         XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
         XMFLOAT4 margin{ p.x - 0.0f, p.y - 0.1f, p.z - 0.0f, p.w - 0.0f };
 
-        Model::GetModel(hModel_)->SetLightPos(margin);
+        //Model::GetModel(hModel_)->SetLightPos(margin);
+        Model::SetLightPosition(margin);
     }
     if (Input::IsKey(DIK_W))
     {
         XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
         XMFLOAT4 margin{ p.x - 0.0f, p.y - 0.0f, p.z + 0.1f, p.w + 0.0f };
 
-        Model::GetModel(hModel_)->SetLightPos(margin);
+        //Model::GetModel(hModel_)->SetLightPos(margin);
+        Model::SetLightPosition(margin);
     }
     if (Input::IsKey(DIK_S))
     {
         XMFLOAT4 p = Model::GetModel(hModel_)->GetLightPos();
         XMFLOAT4 margin{ p.x - 0.0f, p.y - 0.0f, p.z - 0.1f, p.w - 0.0f };
 
-        Model::GetModel(hModel_)->SetLightPos(margin);
+        //Model::GetModel(hModel_)->SetLightPos(margin);
+        Model::SetLightPosition(margin);
     }
-
+    XMFLOAT4 tmp{ Model::GetModel(hModel_)->GetLightPos() };
+    trLightBall.position_ = { tmp.x, tmp.y,tmp.z };
 }
 
 //描画
@@ -93,6 +108,8 @@ void Stage::Draw()
     Model::Draw(hModel_);
     Model::SetTransform(hGround_, trGround);
     Model::Draw(hGround_);
+    Model::SetTransform(hLightBall_, trLightBall);
+    Model::Draw(hLightBall_);
 }
 
 //開放

@@ -39,6 +39,14 @@ void Model::SetTransform(int hModel, Transform transform)
 	//モデル番号は、modelListのインデックス
 }
 
+void Model::SetLightPosition(XMFLOAT4 _lightpos)
+{
+	for (auto& theI : modelList)
+	{
+		theI->pfbx_->SetLightPos(_lightpos);
+	}
+}
+
 Fbx* Model::GetModel(int _hModel)
 {
 	return modelList[_hModel]->pfbx_;

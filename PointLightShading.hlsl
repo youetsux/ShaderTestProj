@@ -16,7 +16,7 @@ cbuffer global:register(b0)
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
 	float4		lightPosition;
 	float4		eyePosition;
-	int4		isTextured;			//テクスチャーが貼られているかどうか
+	bool		isTextured;			//テクスチャーが貼られているかどうか
 };
 
 //───────────────────────────────────────
@@ -56,7 +56,7 @@ PS_IN VS(VS_IN inData)
 	//outData.pos = pos;
 	outData.uv = inData.uv;
 	outData.color = diffuseColor;
-	//outData.color = float4(1.0, 1.0, 1.0, 1.0);
+	//outData.color = float4(1.0, 0.0, 0.0, 1.0);
 	float4 normal;
 
 	normal = mul(inData.normal, matNormal);
@@ -79,13 +79,13 @@ float4 PS(PS_IN inData) : SV_Target
 
 	float3 LD = inData.pos_ - light; // 光の方向ベクトル
 	float len = length(LD); // 光の方向ベクトルを正規化(大きさを 1 にし
-
+						
 	float lightMagnitude = saturate(dot(inData.normal, -normalize(LD)));
 	float k = 1.0f / (1.0 * len * len);
 
 	float4 NL = saturate(dot(inData.normal, normalize(lightPosition)));
 	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
-	float4 specular = 2 * pow(saturate(dot(reflect, normalize(inData.eyev))),8);
+	float4 specular = 2 * pow(saturate(dot(reflect, normalize(inData.eyev))), 6);
 	
 	float  n = clamp((0.8 * k * lightMagnitude),0,1);
 	float4 lightSource = { 1,1,1,1 };//光の色
@@ -107,7 +107,9 @@ float4 PS(PS_IN inData) : SV_Target
 	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
 	//float4 diffuse = lightSource * inData.color;
 	//float4 ambient = lightSource * ambentSource;
-	return diffuse + ambient + specular;
+	//return diffuse + ambient + specular;
+
+	return diffuse + ambient;
 	
 	//return g_texture.Sample(g_sampler, inData.uv);
 }

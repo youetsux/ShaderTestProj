@@ -32,7 +32,7 @@ class Fbx
 		XMFLOAT4	diffuseColor;
 		XMFLOAT4	lightPosition;
 		XMFLOAT4	eyePos;
-		XMINT4		isTextured;
+		BOOL		isTextured;
 	};
 
 	struct VERTEX
