@@ -12,7 +12,7 @@ const XMFLOAT4 LIGHT_POSITION{1, 2, 1, 0 };
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0),
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
-	pMaterialList_(nullptr),IsFlatColor_(false),lightSourcePosition_(LIGHT_POSITION)
+	pMaterialList_(nullptr),IsFlatColor_(false)
 {
 }
 
@@ -179,7 +179,7 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* mesh)
 void Fbx::IntConstantBuffer()
 {
 	D3D11_BUFFER_DESC cb;
-	cb.ByteWidth = sizeof(CONSTANT_BUFFER);
+	cb.ByteWidth = sizeof(CBUFF_MODEL);
 	cb.Usage = D3D11_USAGE_DEFAULT;
 	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cb.CPUAccessFlags = 0;
@@ -253,30 +253,36 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 
 void Fbx::Draw(Transform& transform)
 {
-	Direct3D::SetShader(SHADER_3D);
+	if(state_ == RENDER_DIRLIGHT)
+		Direct3D::SetShader(SHADER_3D);
+	else
+		Direct3D::SetShader(SHADER_POINT);
+
 	transform.Calclation();//トランスフォームを計算
 	
 
 	for (int i = 0; i < materialCount_; i++)
 	{
 		//コンスタントバッファに情報を渡す
-		CONSTANT_BUFFER cb;
+		CBUFF_MODEL cb;
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
 		cb.diffuseColor = pMaterialList_[i].diffuse;
-		cb.lightPosition = lightSourcePosition_;
-		XMStoreFloat4(&cb.eyePos,Camera::GetEyePosition());
+		//cb.lightPosition = lightSourcePosition_;
+		//XMStoreFloat4(&cb.eyePos,Camera::GetEyePosition());
 		//int n = (int)(pMaterialList_[i].pTexture != nullptr);
 		//cb.isTextured = { n,n,n,n };
 		cb.isTextured = pMaterialList_[i].pTexture != nullptr;
 
 
-		D3D11_MAPPED_SUBRESOURCE pdata;
-		Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
-		memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
+		//D3D11_MAPPED_SUBRESOURCE pdata;
+		//Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
+		//memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
 
-		Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
+		//Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
+
+		Direct3D::pContext_->UpdateSubresource(pConstantBuffer_, 0, NULL,&cb, 0, 0);
 
 		//頂点バッファ、インデックスバッファ、コンスタントバッファをパイプラインにセット
 		//頂点バッファ
@@ -307,11 +313,6 @@ void Fbx::Draw(Transform& transform)
 		//描画
 		Direct3D::pContext_->DrawIndexed(indexCount_[i], 0, 0);
 	}
-}
-
-void Fbx::SetLightPos(XMFLOAT4& pos)
-{
-	lightSourcePosition_ = pos;
 }
 
 void Fbx::Release()

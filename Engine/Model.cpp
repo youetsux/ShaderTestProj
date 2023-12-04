@@ -5,6 +5,7 @@ namespace Model {
 
 	//モデルのポインタをぶち込んでおくベクタ
 	std::vector<ModelData*> modelList;
+	RENDER_STATE state_;
 }
 
 int Model::Load(std::string fileName)
@@ -39,13 +40,7 @@ void Model::SetTransform(int hModel, Transform transform)
 	//モデル番号は、modelListのインデックス
 }
 
-void Model::SetLightPosition(XMFLOAT4 _lightpos)
-{
-	for (auto& theI : modelList)
-	{
-		theI->pfbx_->SetLightPos(_lightpos);
-	}
-}
+
 
 Fbx* Model::GetModel(int _hModel)
 {
@@ -77,4 +72,14 @@ void Model::Release()
 		SAFE_DELETE(modelList[i]);
 	}
 	modelList.clear();
+}
+
+void Model::ToggleRenderState()
+{
+	int n = (int)(Model::state_);
+	Model::state_ = (RENDER_STATE)(++n % 2);
+	for (auto& theI : modelList)
+	{
+		theI->pfbx_->SetRenderingShader(Model::state_);
+	}
 }

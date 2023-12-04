@@ -20,6 +20,8 @@ class Stage : public GameObject
     Transform trLightBall;
     ID3D11Buffer* pCBStageScene_;
     //Quad* q;
+    void IntConstantBuffer();
+    XMFLOAT4	lightSourcePosition_;
 public:
     //コンストラクタ
     Stage(GameObject* parent);
@@ -38,4 +40,7 @@ public:
 
     //開放
     void Release() override;
+
+    void	SetLightPos(XMFLOAT4& _pos){ lightSourcePosition_ = _pos; }
+    XMFLOAT4 GetLightPos() { return(lightSourcePosition_); }
 };

@@ -4,6 +4,8 @@
 #include <vector>
 #include "fbx.h"
 
+
+
 namespace Model
 {
 	struct ModelData
@@ -15,9 +17,9 @@ namespace Model
 	};
 	int Load(std::string fileName);
 	void SetTransform(int hModel, Transform transform);
-	void SetLightPosition(XMFLOAT4 _lightpos);
 	Fbx* GetModel(int _hModel);
 	void Draw(int hModel);
 	void Release();
+	void ToggleRenderState();
 }
 
