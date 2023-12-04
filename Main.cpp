@@ -8,6 +8,9 @@
 #include "Engine/Model.h"
 
 #pragma comment(lib, "winmm.lib")
+#pragma warning(disable:26495)
+#pragma warning(disable:26812)
+
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名

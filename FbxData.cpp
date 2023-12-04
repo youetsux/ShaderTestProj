@@ -1,5 +1,7 @@
 #include "FbxData.h"
+#include <filesystem>
 
+using namespace std::filesystem;
 
 FbxData::FbxData()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0)
@@ -8,19 +10,21 @@ FbxData::FbxData()
 
 HRESULT FbxData::Load(std::string fileName)
 {
+	
+
     return E_NOTIMPL;
 }
 
 
-void FbxData::InitVertex(fbxsdk::FbxMesh* mesh)
+void FbxData::LoadVertex(fbxsdk::FbxMesh* mesh)
 {
 }
 
-void FbxData::InitIndex(fbxsdk::FbxMesh* mesh)
+void FbxData::LoadIndex(fbxsdk::FbxMesh* mesh)
 {
 }
 
-void FbxData::InitMaterial(fbxsdk::FbxNode* pNode)
+void FbxData::LoadMaterial(fbxsdk::FbxNode* pNode)
 {
 }
 

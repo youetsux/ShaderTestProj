@@ -39,8 +39,6 @@ struct VERTEX
 };
 
 
-
-
 class MESH
 {
 public:

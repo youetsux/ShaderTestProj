@@ -23,11 +23,10 @@ class FbxData
 	vector<MATERIAL *> MaterialList_;
 	vector<MESH *> mesh_;
 
-	void InitVertex(fbxsdk::FbxMesh* mesh);
-	void InitIndex(fbxsdk::FbxMesh* mesh);
-	void InitMaterial(fbxsdk::FbxNode* pNode);
+	void LoadVertex(fbxsdk::FbxMesh* mesh);
+	void LoadIndex(fbxsdk::FbxMesh* mesh);
+	void LoadMaterial(fbxsdk::FbxNode* pNode);
 public:
-
 	FbxData();
 	HRESULT Load(std::string fileName);
 	void    Release();
