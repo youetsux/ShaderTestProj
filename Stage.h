@@ -2,6 +2,13 @@
 #include "Engine/GameObject.h"
 #include "Engine/Quad.h"
 
+
+struct CBUFF_STAGESCENE
+{
+    XMFLOAT4	lightPosition;
+    XMFLOAT4	eyePos;
+};
+
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
@@ -11,6 +18,7 @@ class Stage : public GameObject
     Transform trBall;
     Transform trGround;
     Transform trLightBall;
+    ID3D11Buffer* pCBStageScene_;
     //Quad* q;
 public:
     //コンストラクタ
