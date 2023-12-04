@@ -24,14 +24,12 @@ class Fbx
 		XMFLOAT4 diffuse;
 	};
 
-	struct CONSTANT_BUFFER
+	struct CBUFF_MODEL
 	{
 		XMMATRIX	matWVP;//wvp
 		XMMATRIX	matW;//wvp
 		XMMATRIX	matNormal;//ÉèÅ[ÉãÉhïœä∑ÇæÇØÇÃÇ‚Ç¬
 		XMFLOAT4	diffuseColor;
-		XMFLOAT4	lightPosition;
-		XMFLOAT4	eyePos;
 		BOOL		isTextured;
 	};
 
