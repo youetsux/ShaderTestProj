@@ -3,7 +3,7 @@
 #include "Direct3D.h"
 #include "Camera.h"
 #include "Texture.h"
-
+#include <filesystem>
 
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0),
@@ -14,6 +14,14 @@ Fbx::Fbx()
 
 HRESULT Fbx::Load(std::string fileName)
 {
+
+	//std::filesystem::path crrPath = std::filesystem::current_path();
+	////std::filesystem::absolute(fileName);
+	//std::filesystem::path absPath = std::filesystem::absolute(fileName);
+	////カレントディレクトリ変更
+	//std::filesystem::current_path(absPath.remove_filename());
+	//std::filesystem::path nPath = std::filesystem::current_path();
+
 	//マネージャを生成
 	FbxManager* pFbxManager = FbxManager::Create();
 

@@ -34,28 +34,22 @@ HRESULT FbxData::Load(std::string fileName)
 	materialCount_ = pNode->GetMaterialCount();
 
 	//現在のカレントディレクトリを取得
-	//char defaultCurrentDir[MAX_PATH];
-	//GetCurrentDirectory(MAX_PATH, defaultCurrentDir);
 	std::filesystem::path crrPath = std::filesystem::current_path();
-
-
-	//引数のfileNameからディレクトリ部分を取得
-	char dir[MAX_PATH];
-	_splitpath_s(fileName.c_str(), nullptr, 0, dir, MAX_PATH, nullptr, 0, nullptr, 0);
-
+	////引数のfileNameからディレクトリ部分を取得
+	std::filesystem::path absPath = std::filesystem::absolute(fileName);
 	//カレントディレクトリ変更
-	SetCurrentDirectory(dir);
+	std::filesystem::current_path(absPath.remove_filename());
 
-	InitVertex(mesh);		//頂点バッファ準備
-	InitIndex(mesh);		//インデックスバッファ準備
-	IntConstantBuffer();	//コンスタントバッファ準備
-	InitMaterial(pNode);
+	LoadVertex(mesh);		//頂点バッファ準備
+	//InitIndex(mesh);		//インデックスバッファ準備
+	//IntConstantBuffer();	//コンスタントバッファ準備
+	//InitMaterial(pNode);
 
-	//カレントディレクトリを元に戻す
-	SetCurrentDirectory(defaultCurrentDir);
+	////カレントディレクトリを元に戻す
+	std::filesystem::current_path(crrPath);
 
 
-	//マネージャ解放
+	////マネージャ解放
 	pFbxManager->Destroy();
 	return S_OK;
 }
@@ -63,6 +57,34 @@ HRESULT FbxData::Load(std::string fileName)
 
 void FbxData::LoadVertex(fbxsdk::FbxMesh* mesh)
 {
+	//頂点情報を入れる配列
+	VERTEX* vertices = new VERTEX[vertexCount_];
+
+	//全ポリゴン
+	for (DWORD poly = 0; poly < polygonCount_; poly++)
+	{
+		//3頂点分
+		for (int vertex = 0; vertex < 3; vertex++)
+		{
+			//調べる頂点の番号
+			int index = mesh->GetPolygonVertex(poly, vertex);
+
+			//頂点の位置
+			FbxVector4 pos = mesh->GetControlPointAt(index);
+			vertices[index].position = XMVectorSet((float)(-pos[0]), (float)pos[1], (float)pos[2], 0.0f);
+
+			//頂点のUV
+			FbxLayerElementUV* pUV = mesh->GetLayer(0)->GetUVs();
+			int uvIndex = mesh->GetTextureUVIndex(poly, vertex, FbxLayerElement::eTextureDiffuse);
+			FbxVector2  uv = pUV->GetDirectArray().GetAt(uvIndex);
+			vertices[index].uv = XMVectorSet((float)(uv.mData[0]), (float)(1.0 - uv.mData[1]), 0.0f, 0.0f);
+
+			//頂点の法線
+			FbxVector4 Normal;
+			mesh->GetPolygonVertexNormal(poly, vertex, Normal);	//ｉ番目のポリゴンの、ｊ番目の頂点の法線をゲット
+			vertices[index].normal = XMVectorSet((float)Normal[0], (float)Normal[1], (float)Normal[2], 0.0f);
+		}
+
 }
 
 void FbxData::LoadIndex(fbxsdk::FbxMesh* mesh)
