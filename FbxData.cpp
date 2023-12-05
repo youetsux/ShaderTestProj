@@ -57,8 +57,13 @@ HRESULT FbxData::Load(std::string fileName)
 
 void FbxData::LoadVertex(fbxsdk::FbxMesh* mesh)
 {
+
+	//vector<MATERIAL*> MaterialList_;
+	//vector<MESH*> mesh_;
 	//頂点情報を入れる配列
-	VERTEX* vertices = new VERTEX[vertexCount_];
+	//ERTEX* vertices = new VERTEX[vertexCount_];
+	MESH* tMesh = new MESH;
+	tMesh->Vertices.resize(vertexCount_);
 
 	//全ポリゴン
 	for (DWORD poly = 0; poly < polygonCount_; poly++)
@@ -71,20 +76,20 @@ void FbxData::LoadVertex(fbxsdk::FbxMesh* mesh)
 
 			//頂点の位置
 			FbxVector4 pos = mesh->GetControlPointAt(index);
-			vertices[index].position = XMVectorSet((float)(-pos[0]), (float)pos[1], (float)pos[2], 0.0f);
+			tMesh->Vertices[index].position = XMFLOAT4((float)(-pos[0]), (float)pos[1], (float)pos[2], 0.0f);
 
 			//頂点のUV
 			FbxLayerElementUV* pUV = mesh->GetLayer(0)->GetUVs();
 			int uvIndex = mesh->GetTextureUVIndex(poly, vertex, FbxLayerElement::eTextureDiffuse);
 			FbxVector2  uv = pUV->GetDirectArray().GetAt(uvIndex);
-			vertices[index].uv = XMVectorSet((float)(uv.mData[0]), (float)(1.0 - uv.mData[1]), 0.0f, 0.0f);
+			tMesh->Vertices[index].uv = XMFLOAT2((float)(uv.mData[0]), (float)(1.0 - uv.mData[1]));
 
 			//頂点の法線
 			FbxVector4 Normal;
 			mesh->GetPolygonVertexNormal(poly, vertex, Normal);	//ｉ番目のポリゴンの、ｊ番目の頂点の法線をゲット
-			vertices[index].normal = XMVectorSet((float)Normal[0], (float)Normal[1], (float)Normal[2], 0.0f);
+			tMesh->Vertices[index].normal = XMFLOAT4((float)Normal[0], (float)Normal[1], (float)Normal[2], 0.0f);
 		}
-
+	}
 }
 
 void FbxData::LoadIndex(fbxsdk::FbxMesh* mesh)

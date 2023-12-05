@@ -1,5 +1,6 @@
 #include "Model.h"
 #include "Direct3D.h"
+#include "../FbxData.h"
 
 namespace Model {
 
@@ -29,6 +30,9 @@ int Model::Load(std::string fileName)
 		pData->pfbx_->Load(fileName);
 	}
 
+	FbxData* fbxdat;
+	fbxdat = new FbxData;
+	fbxdat->Load(fileName);
 	modelList.push_back(pData);
 	return( modelList.size() - 1 );
 }

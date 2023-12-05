@@ -31,9 +31,9 @@ struct MATERIAL
 
 struct VERTEX
 {
-	XMFLOAT3 position;//位置
-	XMFLOAT3 uv; //テクスチャ座標
-	XMFLOAT2 normal; //法線ベクトル
+	XMFLOAT4 position;//位置
+	XMFLOAT2 uv; //テクスチャ座標
+	XMFLOAT4 normal; //法線ベクトル
 	//XMFLOAT3 Tangent; // 接空間
 	//XMFLOAT4 Color; // 頂点色
 };
