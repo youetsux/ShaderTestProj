@@ -43,7 +43,7 @@ class MESH
 {
 public:
 	std::vector<VERTEX> Vertices; // 頂点データの配列
-	std::vector<tuple<int, int, int>> Indices; // インデックスの配列
+	std::vector<std::vector< tuple<int, int, int>> > Indices; // インデックスの配列
 	std::filesystem::path path; // テクスチャのファイルパス
 };
 

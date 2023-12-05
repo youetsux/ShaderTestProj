@@ -90,10 +90,60 @@ void FbxData::LoadVertex(fbxsdk::FbxMesh* mesh)
 			tMesh->Vertices[index].normal = XMFLOAT4((float)Normal[0], (float)Normal[1], (float)Normal[2], 0.0f);
 		}
 	}
+	mesh_.push_back(tMesh);
 }
 
 void FbxData::LoadIndex(fbxsdk::FbxMesh* mesh)
 {
+	//mesh_. = vector<int>(materialCount_);
+	//indexCount_  = new int[materialCount_]
+	
+
+
+	vector<int> index(polygonCount_ * 3);//ポリゴン数*3＝全頂点分用意
+	//int* index = new int[polygonCount_ * 3];
+
+	for (int i = 0; i < materialCount_; i++)
+	{
+		int count = 0;
+		//全ポリゴン
+		for (DWORD poly = 0; poly < polygonCount_; poly++)
+		{
+			//あるマテリアルを持ったポリゴンのリストをとってきて、頂点をリストアップ
+			FbxLayerElementMaterial* mtl = mesh->GetLayer(0)->GetMaterials();
+			int mtlId = mtl->GetIndexArray().GetAt(poly);
+
+			if (mtlId == i)
+			{
+				//3頂点分
+				for (DWORD vertex = 0; vertex < 3; vertex++)
+				{
+					index[count] = mesh->GetPolygonVertex(poly, vertex);
+					count++;
+				}
+			}
+		}
+		indexCount_[i] = count;
+
+		D3D11_BUFFER_DESC   bd;
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(int) * polygonCount_ * 3;
+		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		bd.CPUAccessFlags = 0;
+		bd.MiscFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA InitData;
+		InitData.pSysMem = index.data();
+		InitData.SysMemPitch = 0;
+		InitData.SysMemSlicePitch = 0;
+
+		HRESULT hr;
+		hr = Direct3D::pDevice_->CreateBuffer(&bd, &InitData, &pIndexBuffer_[i]);
+		if (FAILED(hr))
+		{
+			MessageBox(NULL, "インデックスバッファの作成に失敗しました", "エラー", MB_OK);
+		}
+	}
 }
 
 void FbxData::LoadMaterial(fbxsdk::FbxNode* pNode)
