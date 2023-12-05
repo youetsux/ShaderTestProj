@@ -34,28 +34,22 @@ HRESULT FbxData::Load(std::string fileName)
 	materialCount_ = pNode->GetMaterialCount();
 
 	//現在のカレントディレクトリを取得
-	//char defaultCurrentDir[MAX_PATH];
-	//GetCurrentDirectory(MAX_PATH, defaultCurrentDir);
 	std::filesystem::path crrPath = std::filesystem::current_path();
-
-
-	//引数のfileNameからディレクトリ部分を取得
-	char dir[MAX_PATH];
-	_splitpath_s(fileName.c_str(), nullptr, 0, dir, MAX_PATH, nullptr, 0, nullptr, 0);
-
+	////引数のfileNameからディレクトリ部分を取得
+	std::filesystem::path absPath = std::filesystem::absolute(fileName);
 	//カレントディレクトリ変更
-	SetCurrentDirectory(dir);
+	std::filesystem::current_path(absPath.remove_filename());
 
-	InitVertex(mesh);		//頂点バッファ準備
-	InitIndex(mesh);		//インデックスバッファ準備
-	IntConstantBuffer();	//コンスタントバッファ準備
-	InitMaterial(pNode);
+	//InitVertex(mesh);		//頂点バッファ準備
+	//InitIndex(mesh);		//インデックスバッファ準備
+	//IntConstantBuffer();	//コンスタントバッファ準備
+	//InitMaterial(pNode);
 
-	//カレントディレクトリを元に戻す
-	SetCurrentDirectory(defaultCurrentDir);
+	////カレントディレクトリを元に戻す
+	std::filesystem::current_path(crrPath);
 
 
-	//マネージャ解放
+	////マネージャ解放
 	pFbxManager->Destroy();
 	return S_OK;
 }
