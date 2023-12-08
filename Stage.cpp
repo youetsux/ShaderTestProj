@@ -5,8 +5,9 @@
 #include "axisClass.h"
 
 
-
-const XMFLOAT4 LIGHT_POSITION{ 1, 2, 1, 0 };
+namespace {
+    const XMFLOAT4 DEF_LIGHT_POSITION{ 1, 2, 1, 0 };
+}
 
 void Stage::IntConstantBuffer()
 {
@@ -30,7 +31,7 @@ void Stage::IntConstantBuffer()
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hModel_(-1),hGround_(-1),lightSourcePosition_(LIGHT_POSITION)
+    :GameObject(parent, "Stage"), hModel_(-1),hGround_(-1),lightSourcePosition_(DEF_LIGHT_POSITION)
 {
 }
 
