@@ -15,7 +15,7 @@ class Stage : public GameObject
     int hModel_;    //ÉÇÉfÉãî‘çÜ
     int hGround_;
     int hLightBall_;
-    Transform trBall;
+    Transform trDonuts;
     Transform trGround;
     Transform trLightBall;
     ID3D11Buffer* pCBStageScene_;

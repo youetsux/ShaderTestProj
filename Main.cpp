@@ -11,15 +11,13 @@
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
-const int WINDOW_WIDTH = 512;  //ウィンドウの幅
-const int WINDOW_HEIGHT = 512; //ウィンドウの高さ
+const int WINDOW_WIDTH = 1280;  //ウィンドウの幅
+const int WINDOW_HEIGHT =1024; //ウィンドウの高さ
 
 RootJob* pRootJob = nullptr;
 
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-
 
 //エントリーポイント
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
@@ -120,11 +118,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			}
 			lastUpdateTime = nowTime;
 
-
 			countFps++;
-
-
-
 
 			timeEndPeriod(1);
 

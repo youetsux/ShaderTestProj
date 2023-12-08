@@ -43,18 +43,18 @@ Stage::~Stage()
 void Stage::Initialize()
 {
     //モデルデータのロード
-    hModel_ = Model::Load("assets/Ball.fbx");
+    hModel_ = Model::Load("assets/Torus.fbx");
     hGround_ = Model::Load("assets/Ground.fbx");
     hLightBall_ = Model::Load("assets/RedBall.fbx");
     
     assert(hModel_ >= 0);
     assert(hGround_ >= 0);
     assert(hLightBall_ >= 0);
-    Camera::SetPosition(XMVECTOR{ 3, 5, -8, 0 });
-    Camera::SetTarget(XMVECTOR{ 0, 0, 0, 0 });
-    trBall.position_ = {2, 2, 0};
-    trBall.rotate_ = { 0, 0, 0 };
-    trBall.scale_ = {  1,1,1 };
+    Camera::SetPosition(XMVECTOR{ 0, 10, -20, 0 });
+    Camera::SetTarget(XMVECTOR{ 0, 2, 0, 0 });
+    trDonuts.position_ = {0, 2, 0};
+    trDonuts.rotate_ = { 0, 0, 0 };
+    trDonuts.scale_ = {  1,1,1 };
 
     trGround.position_ = { 0, 0, 0 };
     trGround.rotate_ = { 0, 0, 0};
@@ -76,7 +76,7 @@ void Stage::Update()
         Model::ToggleRenderState();
     }
    //transform_.rotate_.y += 0.5f;
-    trBall.rotate_.y += 0.5f;
+    trDonuts.rotate_.y += 0.5f;
     if (Input::IsKey(DIK_RIGHT))
     {
         XMFLOAT4 p = GetLightPos();
@@ -142,10 +142,10 @@ void Stage::Update()
 void Stage::Draw()
 {
     //q->Draw(transform_);
-    Model::SetTransform(hModel_, trBall);
+    Model::SetTransform(hModel_, trDonuts);
     Model::Draw(hModel_);
-    Model::SetTransform(hGround_, trGround);
-    Model::Draw(hGround_);
+    //Model::SetTransform(hGround_, trGround);
+    //Model::Draw(hGround_);
     Model::SetTransform(hLightBall_, trLightBall);
     Model::Draw(hLightBall_);
 }
