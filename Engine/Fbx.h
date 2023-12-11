@@ -61,13 +61,10 @@ class Fbx
 	void InitIndex(fbxsdk::FbxMesh* mesh);
 	void IntConstantBuffer();
 	void InitMaterial(fbxsdk::FbxNode* pNode);
-	bool IsFlatColor_;
-	XMFLOAT4	dColor_;
 	RENDER_STATE state_;
 public:
 
 	Fbx();
-	void	SetFlatColor(XMFLOAT4 col);
 	HRESULT Load(std::string fileName);
 	void    Draw(Transform& transform);
 	void	SetRenderingShader(RENDER_STATE _state) { state_ = _state; }

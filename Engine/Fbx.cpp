@@ -7,20 +7,15 @@
 using namespace DirectX;
 using namespace Camera;
 
-const XMFLOAT4 LIGHT_POSITION{1, 2, 1, 0 };
+const XMFLOAT4 LIGHT_POSITION{ 1, 2, 1, 0 };
 
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0),
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
-	pMaterialList_(nullptr),IsFlatColor_(false)
+	pMaterialList_(nullptr)
 {
 }
 
-void Fbx::SetFlatColor(XMFLOAT4 col)
-{
-	IsFlatColor_ = true;
-	dColor_ = col;
-}
 
 HRESULT Fbx::Load(std::string fileName)
 {
@@ -60,7 +55,7 @@ HRESULT Fbx::Load(std::string fileName)
 	InitIndex(mesh);		//インデックスバッファ準備
 	IntConstantBuffer();	//コンスタントバッファ準備
 	InitMaterial(pNode);
-	
+
 	//カレントディレクトリを元に戻す
 	SetCurrentDirectory(defaultCurrentDir);
 
@@ -151,7 +146,7 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* mesh)
 					index[count] = mesh->GetPolygonVertex(poly, vertex);
 					count++;
 				}
-			}	
+			}
 		}
 		indexCount_[i] = count;
 
@@ -211,55 +206,43 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();
 
 		//テクスチャあり
-		if (!IsFlatColor_) {
-			if (fileTextureCount)
-			{
-				FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>(0);
-				const char* textureFilePath = textureInfo->GetRelativeFileName();
+		if (fileTextureCount)
+		{
+			FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>(0);
+			const char* textureFilePath = textureInfo->GetRelativeFileName();
 
-				//ファイル名+拡張だけにする
-				char name[_MAX_FNAME];	//ファイル名
-				char ext[_MAX_EXT];	//拡張子
-				_splitpath_s(textureFilePath, nullptr, 0, nullptr, 0, name, _MAX_FNAME, ext, _MAX_EXT);
-				wsprintf(name, "%s%s", name, ext);
+			//ファイル名+拡張だけにする
+			char name[_MAX_FNAME];	//ファイル名
+			char ext[_MAX_EXT];	//拡張子
+			_splitpath_s(textureFilePath, nullptr, 0, nullptr, 0, name, _MAX_FNAME, ext, _MAX_EXT);
+			wsprintf(name, "%s%s", name, ext);
 
-				//ファイルからテクスチャ作成
-				pMaterialList_[i].pTexture = new Texture;
-				HRESULT hr = pMaterialList_[i].pTexture->Load(name);
-				assert(hr == S_OK);
-			}
-
-			//テクスチャ無し
-			else
-			{
-				pMaterialList_[i].pTexture = nullptr;
-				//マテリアルの色
-				FbxSurfaceLambert* pMaterial = (FbxSurfaceLambert*)pNode->GetMaterial(i);
-				FbxDouble3  diffuse = pMaterial->Diffuse;
-				pMaterialList_[i].diffuse = XMFLOAT4((float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 1.0f);
-			}
+			//ファイルからテクスチャ作成
+			pMaterialList_[i].pTexture = new Texture;
+			HRESULT hr = pMaterialList_[i].pTexture->Load(name);
+			assert(hr == S_OK);
 		}
+		//テクスチャ無し
 		else
 		{
 			pMaterialList_[i].pTexture = nullptr;
 			//マテリアルの色
-			//FbxSurfaceLambert* pMaterial = (FbxSurfaceLambert*)pNode->GetMaterial(i);
-			//FbxDouble3  diffuse = pMaterial->Diffuse;
-			
-			pMaterialList_[i].diffuse = dColor_;
+			FbxSurfaceLambert* pMaterial = (FbxSurfaceLambert*)pNode->GetMaterial(i);
+			FbxDouble3  diffuse = pMaterial->Diffuse;
+			pMaterialList_[i].diffuse = XMFLOAT4((float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 1.0f);
 		}
 	}
 }
 
 void Fbx::Draw(Transform& transform)
 {
-	if(state_ == RENDER_DIRLIGHT)
+	if (state_ == RENDER_DIRLIGHT)
 		Direct3D::SetShader(SHADER_3D);
 	else
 		Direct3D::SetShader(SHADER_POINT);
 
 	transform.Calclation();//トランスフォームを計算
-	
+
 
 	for (int i = 0; i < materialCount_; i++)
 	{
@@ -282,7 +265,7 @@ void Fbx::Draw(Transform& transform)
 
 		//Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
 
-		Direct3D::pContext_->UpdateSubresource(pConstantBuffer_, 0, NULL,&cb, 0, 0);
+		Direct3D::pContext_->UpdateSubresource(pConstantBuffer_, 0, NULL, &cb, 0, 0);
 
 		//頂点バッファ、インデックスバッファ、コンスタントバッファをパイプラインにセット
 		//頂点バッファ
