@@ -15,7 +15,6 @@ cbuffer gmodel:register(b0)
 	float4x4	matNormal;           // ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
 	bool		isTextured;			//テクスチャーが貼られているかどうか
-
 };
 
 cbuffer gmodel:register(b1)

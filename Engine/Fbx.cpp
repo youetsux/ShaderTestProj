@@ -39,7 +39,7 @@ HRESULT Fbx::Load(std::string fileName)
 	//各情報の個数を取得
 	vertexCount_ = mesh->GetControlPointsCount();	//頂点の数
 	polygonCount_ = mesh->GetPolygonCount();	//ポリゴンの数
-	materialCount_ = pNode->GetMaterialCount();
+	materialCount_ = pNode->GetMaterialCount();//メッシュに含まれるマテリアル数
 
 	//現在のカレントディレクトリを取得
 	char defaultCurrentDir[MAX_PATH];
@@ -197,8 +197,19 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 	for (int i = 0; i < materialCount_; i++)
 	{
 		//i番目のマテリアル情報を取得
-		FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
+		FbxSurfacePhong* pMaterial = (FbxSurfacePhong *)(pNode->GetMaterial(i));
+		FbxDouble3 diffuse = pMaterial->Diffuse;
+		//FbxDouble3はdiffuse[0],diffuse[1],diffuse[2]でアクセスできるよ
+		FbxDouble3 ambient = pMaterial->Ambient; //XMFLOAT4
 
+		if (pMaterial->GetClassId().Is(FbxSurfacePhong::ClassId)) {
+			FbxDouble3 specular = pMaterial->Specular;
+			FbxDouble shiness = pMaterial->Shininess;
+		}
+
+		pMaterialList_[i].diffuse = XMFLOAT4{ (float)diffuse[0],(float)diffuse[1], (float)diffuse[2], 1.0f};
+
+			
 		//テクスチャ情報
 		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
 
