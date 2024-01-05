@@ -5,11 +5,11 @@
 
 
 //コンストラクタ
-Sprite::Sprite() :
+Sprite::Sprite(string _fileName) :
 	vertexNum_(0), pVertexBuffer_(nullptr),
 	indexNum(0), pIndexBuffer_(nullptr),
 	pConstantBuffer_(nullptr),
-	pTexture_(nullptr)
+	pTexture_(nullptr),spriteFileName_(_fileName)
 {
 }
 
@@ -43,7 +43,7 @@ HRESULT Sprite::Initialize()
 	}
 
 	//テクスチャのロード
-	if (FAILED(LoadTexture()))
+	if (FAILED(LoadTexture(spriteFileName_)))
 	{
 		return E_FAIL;
 	}
@@ -168,9 +168,9 @@ HRESULT Sprite::CreateConstantBuffer()
 {
 	D3D11_BUFFER_DESC cb;
 	cb.ByteWidth = sizeof(CONSTANT_BUFFER);
-	cb.Usage = D3D11_USAGE_DYNAMIC;
+	cb.Usage = D3D11_USAGE_DEFAULT;
 	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cb.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cb.CPUAccessFlags = 0;
 	cb.MiscFlags = 0;
 	cb.StructureByteStride = 0;
 
@@ -186,12 +186,12 @@ HRESULT Sprite::CreateConstantBuffer()
 }
 
 //テクスチャをロード
-HRESULT Sprite::LoadTexture()
+HRESULT Sprite::LoadTexture(string _fileName)
 {
 	pTexture_ = new Texture;
 
 	HRESULT hr;
-	hr = pTexture_->Load("Assets\\Dice.png");
+	hr = pTexture_->Load(_fileName);
 	if (FAILED(hr))
 	{
 		MessageBox(NULL, "テクスチャの作成に失敗しました", "エラー", MB_OK);
@@ -206,9 +206,12 @@ void Sprite::PassDataToCB(XMMATRIX worldMatrix)
 	CONSTANT_BUFFER cb;
 	cb.matW = XMMatrixTranspose(worldMatrix);
 
-	D3D11_MAPPED_SUBRESOURCE pdata;
-	Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
-	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
+	//D3D11_MAPPED_SUBRESOURCE pdata;
+	//Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
+	//memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
+
+	Direct3D::pContext_->UpdateSubresource(pConstantBuffer_, 0, NULL, &cb, 0, 0);
+
 
 	ID3D11SamplerState* pSampler = pTexture_->GetSampler();
 	Direct3D::pContext_->PSSetSamplers(0, 1, &pSampler);
@@ -216,7 +219,7 @@ void Sprite::PassDataToCB(XMMATRIX worldMatrix)
 	ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
 	Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
 
-	Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
+	//Direct3D::pContext_->Unmap(pConstantBuffer_, 0);	//再開
 }
 
 //各バッファをパイプラインにセット

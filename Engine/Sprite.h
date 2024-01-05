@@ -2,9 +2,10 @@
 #include "Direct3D.h"
 #include "Texture.h"
 #include <vector>
+#include <string>
 #include "Transform.h"
 
-
+using std::string;
 
 #define SAFE_DELETE_ARRAY(p) if(p != nullptr){ delete[] p; p = nullptr;}
 
@@ -38,10 +39,10 @@ protected:
 	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
 
 	Texture* pTexture_;		//テクスチャ
-
+	string spriteFileName_;
 
 public:
-	Sprite();
+	Sprite(string _fileName);
 	~Sprite();
 
 	//初期化（ポリゴンを表示するための各種情報を準備）
@@ -67,7 +68,7 @@ private:
 
 	HRESULT CreateConstantBuffer();		//コンスタントバッファ作成
 
-	HRESULT LoadTexture();				//テクスチャをロード
+	HRESULT LoadTexture(string _fileName);	//テクスチャをロード
 
 
 	//---------Draw関数から呼ばれる関数---------
