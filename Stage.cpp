@@ -77,7 +77,7 @@ void Stage::Update()
         Model::ToggleRenderState();
     }
    //transform_.rotate_.y += 0.5f;
-   // trDonuts.rotate_.y += 0.5f;
+    trDonuts.rotate_.y += 0.5f;
     if (Input::IsKey(DIK_RIGHT))
     {
         XMFLOAT4 p = GetLightPos();
