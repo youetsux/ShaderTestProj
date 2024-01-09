@@ -7,7 +7,7 @@ ImageScene::ImageScene(GameObject* parent)
 
 void ImageScene::Initialize()
 {
-	sImage = new Sprite("Assets\\kaas.png");
+	sImage = new GifSprite("Assets\\ani.gif");
 	sImage->Initialize();
 }
 

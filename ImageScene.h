@@ -1,11 +1,11 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Engine/Sprite.h"
+#include "GifSprite.h"
 
 class ImageScene :
     public GameObject
 {
-    Sprite *sImage;
+    GifSprite *sImage;
 public:
     ImageScene(GameObject* parent);
     void Initialize() override;
