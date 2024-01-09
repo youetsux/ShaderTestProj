@@ -316,7 +316,7 @@ HRESULT Direct3D::InitShader2D()
 
 	return S_OK;
 }
-
+//InitShader3Dをコピペして、名前をInitToonShade()に変更
 HRESULT Direct3D::InitToonShade()
 {
 	using namespace Direct3D;
@@ -359,7 +359,8 @@ HRESULT Direct3D::InitToonShade()
 	D3DCompileFromFile(L"Toon.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
 	assert(pCompilePS != nullptr);
 
-	hr = pDevice_->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &(shaderBundle[SHADER_TOON].pPixelShader_));
+	hr = pDevice_->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), 
+		NULL, &(shaderBundle[SHADER_TOON].pPixelShader_));
 	if (FAILED(hr))
 	{
 		//エラー処理
@@ -372,7 +373,7 @@ HRESULT Direct3D::InitToonShade()
 
 	//ラスタライザ作成
 	D3D11_RASTERIZER_DESC rdc = {};
-	rdc.CullMode = D3D11_CULL_BACK;
+	rdc.CullMode = D3D11_CULL_FRONT;
 	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.FrontCounterClockwise = FALSE;
 	rdc.ScissorEnable = false;
