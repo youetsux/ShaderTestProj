@@ -78,6 +78,7 @@
     <FxCompile Include="PointLightShading.hlsl" />
     <FxCompile Include="Toon.hlsl" />
     <FxCompile Include="ToonOutline.hlsl" />
+    <FxCompile Include="NormalMapping.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera.h">
