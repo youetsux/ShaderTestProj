@@ -29,7 +29,6 @@ cbuffer gmodel:register(b1)
 };
 
 
-
 //───────────────────────────────────────
 // 頂点シェーダー出力＆ピクセルシェーダー入力データ構造体
 //───────────────────────────────────────
@@ -89,8 +88,6 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 	outData.light.z = dot(light, normal);
 	outData.light.w = 0;
 
-
-
 	//まとめて出力
 	return outData;
 }
@@ -116,25 +113,23 @@ float4 PS(VS_OUT inData) : SV_Target
 		tmpNormal.w = 0;
 		tmpNormal = normalize(tmpNormal);
 
-		float4 S = dot(inData.light, tmpNormal);
+		float4 S = dot(tmpNormal, normalize(inData.light));
 		S = clamp(S, 0, 1);
 
-		float4 R = reflect(inData.light, tmpNormal);
-		specular = pow(clamp(dot(R, inData.Neyev), 0, 1), shininess) * specularColor;
+		float4 R = reflect(-inData.light, tmpNormal);
+		specular = pow(saturate(dot(R, inData.Neyev)), shininess) * specularColor;
 
-		//if (hasTexture != 0)
-		//{
-		//	diffuse = g_texture.Sample(g_sampler, inData.uv) * S;
-		//	ambient = g_texture.Sample(g_sampler, inData.uv) * ambientColor;
-		//}
-		//else
-		//{
-		//	diffuse = diffuseColor * S;
-		//	ambient = diffuseColor * ambientColor;
-		//}
-		diffuse = diffuseColor * S;
-		ambient = diffuseColor * ambientColor;
-		return  diffuse + ambient;
+		if (hasTexture != 0)
+		{
+			diffuse = g_texture.Sample(g_sampler, inData.uv) * S;
+			ambient = g_texture.Sample(g_sampler, inData.uv) * ambientColor;
+		}
+		else
+		{
+			diffuse = diffuseColor * S;
+			ambient = diffuseColor * ambientColor;
+		}
+		return  diffuse + ambient + specular;
 	}
 	else
 	{
