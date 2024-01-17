@@ -67,7 +67,7 @@ void Sprite::Draw(Transform& transform)
 	SetBufferToPipeline();
 
 	//•`‰æ
-	Direct3D::pContext_->DrawIndexed(indexNum, 0, 0);
+	Direct3D::pContext_->DrawIndexed((UINT)indexNum, (UINT)0, 0);
 }
 
 //‰ð•ú
@@ -108,7 +108,7 @@ HRESULT Sprite::CreateVertexBuffer()
 {
 	HRESULT hr;
 	D3D11_BUFFER_DESC bd_vertex;
-	bd_vertex.ByteWidth = sizeof(VERTEX) * vertexNum_;
+	bd_vertex.ByteWidth = (unsigned int)(sizeof(VERTEX) * vertexNum_);
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd_vertex.CPUAccessFlags = 0;
@@ -143,7 +143,7 @@ HRESULT Sprite::CreateIndexBuffer()
 {
 	D3D11_BUFFER_DESC   bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(int) * indexNum;
+	bd.ByteWidth = (unsigned int)(sizeof(int) * indexNum);
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
