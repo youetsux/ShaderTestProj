@@ -51,7 +51,7 @@ void Stage::Initialize()
     assert(hModel_ >= 0);
     assert(hGround_ >= 0);
     assert(hLightBall_ >= 0);
-    Camera::SetPosition(XMVECTOR{ 0, 10, -20, 0 });
+    Camera::SetPosition(XMVECTOR{ 0, 10, -5, 0 });
     Camera::SetTarget(XMVECTOR{ 0, 2, 0, 0 });
     trDonuts.position_ = {0, 2, 0};
     trDonuts.rotate_ = { 0, 0, 0 };
