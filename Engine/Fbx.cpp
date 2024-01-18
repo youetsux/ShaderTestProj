@@ -96,13 +96,13 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 			vertices[index].normal = XMVectorSet((float)Normal[0], (float)Normal[1], (float)Normal[2], 0.0f);
 		}
 	}
+	
+	FbxGeometryElementTangent* t = mesh->GetElementTangent(0);
 	//タンジェント取得
 	for (int i = 0; i < polygonCount_; i++)
 	{
-		int startIndex = mesh->GetPolygonVertexIndex(i);
-
-		FbxGeometryElementTangent* t = mesh->GetElementTangent(0);
 		FbxVector4 tangent{ 0,0,0,0 };
+		int startIndex = mesh->GetPolygonVertexIndex(i);
 		if (t) {
 			tangent = t->GetDirectArray().GetAt(startIndex).mData;
 		}
@@ -314,7 +314,7 @@ void Fbx::Draw(Transform& transform)
 		Direct3D::SetShader(SHADER_NORMALMAP);
 	else
 		Direct3D::SetShader(SHADER_3D);
-
+	//Direct3D::SetShader(SHADER_NORMALMAP);
 	transform.Calclation();//トランスフォームを計算
 
 
