@@ -7,7 +7,7 @@
 using namespace DirectX;
 using namespace Camera;
 
-const XMFLOAT4 LIGHT_POSITION{ 1, 2, 1, 0 };
+//const XMFLOAT4 LIGHT_POSITION{ 1, 2, 1, 0 };
 
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0),
