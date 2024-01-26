@@ -372,7 +372,6 @@ void Fbx::Draw(Transform& transform)
 			Direct3D::pContext_->PSSetShaderResources(1, 1, &pSRV);
 		}
 
-
 		//•`‰æ
 		Direct3D::pContext_->DrawIndexed(indexCount_[i], 0, 0);
 	}

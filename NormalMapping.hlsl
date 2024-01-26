@@ -56,27 +56,27 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 	outData.pos = mul(pos, matWVP);
 	outData.uv = (float2)uv;
 
-	float3  tmp = cross(tangent, normal);
-	float4 binormal = { tmp, 0 };
+	float3  binormal = cross(normal, tangent);
 	binormal = mul(binormal, matNormal);
 	binormal = normalize(binormal); //従法線ベクトルをローカル座標に変換したやつ
 
-	normal.w = 0;
 	outData.normal = normalize(mul(normal, matNormal)); //法線ベクトルをローカル座標に変換したやつ
-
+	outData.normal.w = 0;
+	
 
 	tangent = mul(tangent, matNormal);
-	tangent.w = 0;
 	tangent = normalize(tangent); //接線ベクトルをローカル座標に変換したやつ
+	tangent.w = 0;
 
 	
-	float4 posw = mul(pos, matW);
-	outData.eyev = normalize(posw - eyePosition); //ワールド座標の視線ベクトル
+
+	float4 eye = normalize(mul(pos, matW) - eyePosition); //ワールド座標の視線ベクトル
+	outData.eyev = eye;
+
 	
-	
-	outData.Neyev.x = dot(outData.eyev, tangent);//接空間の視線ベクトル
-	outData.Neyev.y = dot(outData.eyev, binormal);
-	outData.Neyev.z = dot(outData.eyev, normal);
+	outData.Neyev.x = dot(eye, tangent);//接空間の視線ベクトル
+	outData.Neyev.y = dot(eye, binormal);
+	outData.Neyev.z = dot(eye, normal);
 	outData.Neyev.w = 0;
 
 	float4 light = normalize(lightPosition);
@@ -126,7 +126,7 @@ float4 PS(VS_OUT inData) : SV_Target
 			diffuse = lightSource * diffuseColor * NL;
 			ambient = lightSource * diffuseColor * ambientColor;
 		}
-		return   diffuse + ambient + specular;
+		return  NL;
 	}
 	else
 	{

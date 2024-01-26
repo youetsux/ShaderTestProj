@@ -77,7 +77,7 @@ void Stage::Update()
         Model::ToggleRenderState();
     }
    //transform_.rotate_.y += 0.5f;
-   // trDonuts.rotate_.y += 0.5f;
+    trDonuts.rotate_.y += 0.5f;
     if (Input::IsKey(DIK_RIGHT))
     {
         XMFLOAT4 p = GetLightPos();
@@ -131,7 +131,7 @@ void Stage::Update()
 
     CBUFF_STAGESCENE cb;
     cb.lightPosition = lightSourcePosition_;
-    XMStoreFloat4(&cb.eyePos,Camera::GetEyePosition());
+    XMStoreFloat4(&(cb.eyePos),Camera::GetEyePosition());
 
     Direct3D::pContext_->UpdateSubresource(pCBStageScene_, 
         0, NULL, &cb, 0, 0);

@@ -13,7 +13,7 @@ TestScene::TestScene(GameObject* parent)
 void TestScene::Initialize()
 {
 	Instantiate<Stage>(this);
-	Instantiate<transOBJ>(this);
+	//Instantiate<transOBJ>(this);
 }
 
 void TestScene::Update()
