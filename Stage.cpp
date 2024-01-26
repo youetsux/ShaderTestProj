@@ -44,14 +44,14 @@ Stage::~Stage()
 void Stage::Initialize()
 {
     //モデルデータのロード
-    hModel_ = Model::Load("assets/Torus.fbx");
+    hModel_ = Model::Load("assets/ball.fbx");
     hGround_ = Model::Load("assets/Ground.fbx");
     hLightBall_ = Model::Load("assets/RedBall.fbx");
     
     assert(hModel_ >= 0);
     assert(hGround_ >= 0);
     assert(hLightBall_ >= 0);
-    Camera::SetPosition(XMVECTOR{ 0, 1, -10, 0 });
+    Camera::SetPosition(XMVECTOR{ 0, 1, -5, 0 });
     Camera::SetTarget(XMVECTOR{ 0, 2, 0, 0 });
     trDonuts.position_ = {0, 2, 0};
     trDonuts.rotate_ = { 0, 0, 0 };
