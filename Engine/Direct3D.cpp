@@ -22,6 +22,7 @@ namespace Direct3D
 		ID3D11RasterizerState* pRasterizerState_ = nullptr;	//ラスタライザー
 	};
 	SHADER_BUNDLE shaderBundle[SHADER_MAX];
+	SIZE screenSize;
 }
 
 
@@ -37,7 +38,6 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 
 	//とりあえず全部0
 	ZeroMemory(&scDesc, sizeof(scDesc));
-
 	//描画先のフォーマット
 	scDesc.BufferDesc.Width = winW;		//画面幅
 	scDesc.BufferDesc.Height = winH;	//画面高さ
@@ -143,6 +143,8 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	{
 		return hr;
 	}
+
+	screenSize = { winW, winH };
 
 	return S_OK;
 }

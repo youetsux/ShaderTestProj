@@ -10,7 +10,9 @@ SamplerState	g_sampler : register(s0);	//サンプラー
 //───────────────────────────────────────
 cbuffer global
 {
-	float4x4	matW;			// ワールド行列
+	matrix g_matWorld;		// 頂点座標変換行列
+	matrix g_matTexture;	// テクスチャ座標変換行列
+	float4 g_vecColor;		// テクスチャ合成色
 };
 
 //───────────────────────────────────────

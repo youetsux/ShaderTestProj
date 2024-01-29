@@ -56,7 +56,7 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 	outData.pos = mul(pos, matWVP);
 	outData.uv = (float2)uv;
 
-	float3  binormal = cross(normal, tangent);
+	float3  binormal = cross(tangent, normal);
 	binormal = mul(binormal, matNormal);
 	binormal = normalize(binormal); //従法線ベクトルをローカル座標に変換したやつ
 
@@ -125,7 +125,7 @@ float4 PS(VS_OUT inData) : SV_Target
 			diffuse = lightSource * diffuseColor * NL;
 			ambient = lightSource * diffuseColor * ambientColor;
 		}
-		return  NL;
+		return  diffuse + ambient + specular;
 	}
 	else
 	{
