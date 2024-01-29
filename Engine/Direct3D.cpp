@@ -509,3 +509,19 @@ void Direct3D::Release()
 	SAFE_RELEASE(pContext_);
 	SAFE_RELEASE(pDevice_);
 }
+
+void Direct3D::SetDepthBafferWriteEnable(bool isWrite)
+{
+	//ON
+	if (isWrite)
+	{
+		//Zバッファ（デプスステンシルを指定する）
+		pContext_->OMSetRenderTargets(1, &pRenderTargetView_, pDepthStencilView);
+	}
+
+	//OFF
+	else
+	{
+		pContext_->OMSetRenderTargets(1, &pRenderTargetView_, nullptr);
+	}
+}
