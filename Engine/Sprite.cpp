@@ -183,11 +183,7 @@ void Sprite::InitVertexData()
 	bd_vertex.StructureByteStride = 0;
 	D3D11_SUBRESOURCE_DATA data_vertex;
 	data_vertex.pSysMem = vertices_.data();
-	hr = Direct3D::pDevice_->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
-	if (FAILED(hr))
-	{
-		MessageBox(NULL, "頂点バッファの作成に失敗しました", "エラー", MB_OK);
-	}
+	Direct3D::pDevice_->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
 }
 
 
@@ -218,31 +214,7 @@ void Sprite::InitIndexData()
 		MessageBox(NULL, "インデックスバッファの作成に失敗しました", "エラー", MB_OK);
 	}
 }
-//
-////インデックスバッファを作成
-//HRESULT Sprite::CreateIndexBuffer()
-//{
-//	D3D11_BUFFER_DESC   bd;
-//	bd.Usage = D3D11_USAGE_DEFAULT;
-//	bd.ByteWidth = (unsigned int)(sizeof(int) * indexNum);
-//	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-//	bd.CPUAccessFlags = 0;
-//	bd.MiscFlags = 0;
-//
-//	D3D11_SUBRESOURCE_DATA InitData;
-//	InitData.pSysMem = index_.data();
-//	InitData.SysMemPitch = 0;
-//	InitData.SysMemSlicePitch = 0;
-//
-//	HRESULT hr;
-//	hr = Direct3D::pDevice_->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
-//	if (FAILED(hr))
-//	{
-//		MessageBox(NULL, "インデックスバッファの作成に失敗しました", "エラー", MB_OK);
-//		return hr;
-//	}
-//	return S_OK;
-//}
+
 
 //コンスタントバッファ作成
 HRESULT Sprite::CreateConstantBuffer()

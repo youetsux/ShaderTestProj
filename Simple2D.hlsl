@@ -34,8 +34,8 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD)
 
 	//ローカル座標に、ワールド行列をかけて
 	//スクリーン座標に変換し、ピクセルシェーダーへ
-	outData.pos = mul(pos, matW);
-	outData.uv = (float2)uv;
+	outData.pos = mul(pos, g_matWorld);
+	outData.uv = mul(uv, g_matTexture);
 
 	//まとめて出力
 	return outData;
@@ -47,6 +47,6 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD)
 float4 PS(VS_OUT inData) : SV_Target
 {
 	float4 output;
-	output = g_texture.Sample(g_sampler, inData.uv) * inData.uv.y;
+	output = g_vecColor * g_texture.Sample(g_sampler, inData.uv) ;
 	return output;
 }

@@ -31,7 +31,7 @@ void Stage::IntConstantBuffer()
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hModel_(-1),hGround_(-1),lightSourcePosition_(DEF_LIGHT_POSITION)
+    :GameObject(parent, "Stage"), hModel_(-1),hGround_(-1),lightSourcePosition_(DEF_LIGHT_POSITION),sprite_(nullptr)
 {
 }
 
@@ -66,6 +66,10 @@ void Stage::Initialize()
     trLightBall.scale_ = { 0.4f, 0.4f, 0.4f };
     Instantiate<axisClass>(this);
     IntConstantBuffer();
+
+    sprite_ = new Sprite;
+   
+    sprite_->Load("tex.png");
 }
 
 //更新
