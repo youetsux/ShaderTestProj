@@ -190,7 +190,7 @@ void Sprite::InitVertexData()
 //インデックス情報を準備
 void Sprite::InitIndexData()
 {
-	index_ = { 0,2,3, 0,1,2 };
+	index_ = { 2,1,0,2,3,1 };
 
 	//インデックス数
 	indexNum = index_.size();
@@ -221,7 +221,7 @@ HRESULT Sprite::CreateConstantBuffer()
 {
 	D3D11_BUFFER_DESC cb;
 	cb.ByteWidth = sizeof(CONSTANT_BUFFER);
-	cb.Usage = D3D11_USAGE_DEFAULT;
+	cb.Usage = D3D11_USAGE_DYNAMIC;
 	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cb.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	cb.MiscFlags = 0;

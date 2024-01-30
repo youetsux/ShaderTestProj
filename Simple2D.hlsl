@@ -48,5 +48,6 @@ float4 PS(VS_OUT inData) : SV_Target
 {
 	float4 output;
 	output = g_vecColor * g_texture.Sample(g_sampler, inData.uv) ;
-	return output;
+	//return output;
+	return float4(1, 0, 0, 0);
 }
