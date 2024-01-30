@@ -64,7 +64,7 @@ void Stage::Initialize()
     trLightBall.position_ = { 1, 1, 2};
     trLightBall.rotate_ = { 0, 0, 0 };
     trLightBall.scale_ = { 0.4f, 0.4f, 0.4f };
-    Instantiate<axisClass>(this);
+    //Instantiate<axisClass>(this);
     IntConstantBuffer();
 
     sprite_ = new Sprite;
@@ -147,19 +147,22 @@ void Stage::Update()
 //•`‰æ
 void Stage::Draw()
 {
+
+
     //q->Draw(transform_);
-    //Model::SetTransform(hModel_, trDonuts);
-    //Model::Draw(hModel_);
-    ////Model::SetTransform(hGround_, trGround);
-    ////Model::Draw(hGround_);
-    //Model::SetTransform(hLightBall_, trLightBall);
-    //Model::Draw(hLightBall_);
+    Model::SetTransform(hModel_, trDonuts);
+    Model::Draw(hModel_);
+    //Model::SetTransform(hGround_, trGround);
+    //Model::Draw(hGround_);
+    Model::SetTransform(hLightBall_, trLightBall);
+    Model::Draw(hLightBall_);
+
     Transform t;
-    t.position_ = { 0,2,0 };
+    t.position_ = { 0, 0, 0 };
     t.scale_ = { 1.0, 1.0, 1.0 };
     t.rotate_ = { 0,0,0 };
-    RECT rec{ 0,0,100,100 };
-    sprite_->Draw(t, rec, 1.0f);
+    RECT rec{ 0, 0, 300, 300 };
+    sprite_->Draw(t, rec, 0.5f);
 }
 
 //ŠJ•ú
