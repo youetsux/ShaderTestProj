@@ -51,7 +51,7 @@ void Stage::Initialize()
     assert(hModel_ >= 0);
     assert(hGround_ >= 0);
     assert(hLightBall_ >= 0);
-    Camera::SetPosition(XMVECTOR{ 0, 1, -5, 0 });
+    Camera::SetPosition(XMVECTOR{ 0, 1, -15, 0 });
     Camera::SetTarget(XMVECTOR{ 0, 2, 0, 0 });
     trDonuts.position_ = {0, 2, 0};
     trDonuts.rotate_ = { 0, 0, 0 };
@@ -148,12 +148,18 @@ void Stage::Update()
 void Stage::Draw()
 {
     //q->Draw(transform_);
-    Model::SetTransform(hModel_, trDonuts);
-    Model::Draw(hModel_);
-    //Model::SetTransform(hGround_, trGround);
-    //Model::Draw(hGround_);
-    Model::SetTransform(hLightBall_, trLightBall);
-    Model::Draw(hLightBall_);
+    //Model::SetTransform(hModel_, trDonuts);
+    //Model::Draw(hModel_);
+    ////Model::SetTransform(hGround_, trGround);
+    ////Model::Draw(hGround_);
+    //Model::SetTransform(hLightBall_, trLightBall);
+    //Model::Draw(hLightBall_);
+    Transform t;
+    t.position_ = { 0,2,0 };
+    t.scale_ = { 1.0, 1.0, 1.0 };
+    t.rotate_ = { 0,0,0 };
+    RECT rec{ 0,0,100,100 };
+    sprite_->Draw(t, rec, 1.0f);
 }
 
 //ŠJ•ú
